@@ -76,7 +76,8 @@ singularity run --cleanenv \
     --use-aroma \
     --notrack \
     --use-syn-sdc \
-    --ignore fieldmaps
+    --ignore fieldmaps \
+    --fs-no-reconall
 
 exitcode=$?
 
