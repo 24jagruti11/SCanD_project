@@ -2,13 +2,13 @@
 #SBATCH --job-name=fmriprep_func
 #SBATCH --output=logs/%x_%j.out 
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=40
-#SBATCH --time=12:00:00
+#SBATCH --cpus-per-task=4
+#SBATCH --time=04:00:00
 
 
-SUB_SIZE=2 ## number of subjects to run is 1 because there are multiple tasks/run that will run in parallel 
-CORES=40
-export THREADS_PER_COMMAND=2
+SUB_SIZE=1 ## number of subjects to run is 1 because there are multiple tasks/run that will run in parallel 
+CORES=4
+export THREADS_PER_COMMAND=1
 
 ####----### the next bit only works IF this script is submitted from the $BASEDIR/$OPENNEURO_DS folder...
 
@@ -41,7 +41,7 @@ export SING_CONTAINER=${BASEDIR}/containers/fmriprep-20.1.1.simg
 export OUTPUT_DIR=${BASEDIR}/data/local/ # use if version of fmriprep <=20.1
 
 # export LOCAL_FREESURFER_DIR=${SCRATCH}/${STUDY}/data/derived/freesurfer-6.0.1
-export WORK_DIR=${BBUFFER}/SCanD/fmriprep
+export WORK_DIR=${SCRATCH}/Work/SCanD/fmriprep
 export LOGS_DIR=${BASEDIR}/logs
 mkdir -vp ${OUTPUT_DIR} ${WORK_DIR} # ${LOCAL_FREESURFER_DIR}
 
@@ -69,8 +69,8 @@ singularity run --cleanenv \
     --participant_label ${SUBJECTS} \
     -w /work \
     --skip-bids-validation \
-    --omp-nthreads 8 \
-    --nthreads 40 \
+    --omp-nthreads 4 \
+    --nthreads 4 \
     --mem-mb 15000 \
     --output-space anat MNI152NLin2009cAsym:res-2 \
     --use-aroma \
